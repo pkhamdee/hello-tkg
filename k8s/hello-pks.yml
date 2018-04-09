@@ -32,7 +32,7 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
         - name: _JAVA_OPTIONS
-          value: "-Xmx45M -Xss1M -XX:MaxMetaspaceSize=99M -XX:ReservedCodeCacheSize=32M -XX:CompressedClassSpaceSize=18M -XX:MaxDirectMemorySize=32M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP -Dinfo.docker.digest=INFO_DOCKER_DIGEST"
+          value: "-Xms40M -Xmx40M -Xss1M -XX:MaxMetaspaceSize=48M -XX:ReservedCodeCacheSize=32M -XX:CompressedClassSpaceSize=18M -XX:MaxDirectMemorySize=16M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP -Dinfo.docker.digest=INFO_DOCKER_DIGEST"
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -85,20 +85,20 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8080
-          initialDelaySeconds: 15
+          initialDelaySeconds: 10
           timeoutSeconds: 3
-          periodSeconds: 10
+          periodSeconds: 5
           failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /actuator/health
             port: 8080
-          initialDelaySeconds: 30
-          timeoutSeconds: 3
+          initialDelaySeconds: 20
+          timeoutSeconds: 1
           periodSeconds: 10
-          failureThreshold: 3
+          failureThreshold: 1
         resources:
           limits:
-            memory: "256Mi"
+            memory: "174Mi"
           # requests:
-          #   memory: "256Mi"
+          #   memory: "174Mi"
