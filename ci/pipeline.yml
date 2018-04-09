@@ -312,12 +312,12 @@ jobs:
         - -c
         - |
           set -e
-          VERSION=`cat repo-version/number`-SNAPSHOT
+          VERSION=`cat repo-version/number`
           cd repo
           rm -rf ~/.m2
           ln -fs $(pwd)/m2 ~/.m2
-          mvn versions:set -DnewVersion=${VERSION} -DallowSnapshots
-          sed -i.bak "s/:$(cat repo-version/number)/:latest/g" k8s/hello-pks.yml
+          mvn versions:set -DnewVersion=${VERSION}-SNAPSHOT -DallowSnapshots
+          sed -i.bak "s/:${VERSION}/:latest/g" k8s/hello-pks.yml
           rm -f pom.xml.versionsBackup
           shopt -s dotglob
           shopt -s extglob
@@ -326,7 +326,7 @@ jobs:
           git config --global user.email "${GIT_EMAIL}"
           git config --global user.name "${GIT_NAME}"
           git add -A
-          git commit -m "Bump to ${VERSION}"
+          git commit -m "Bump to ${VERSION}-SNAPSHOT"
   - put: repo-develop
     params:
       repository: output
