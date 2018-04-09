@@ -38,7 +38,7 @@ resources:
       password: ((harbor-password))
 jobs:
 ### Dev
-- name: docker-push-develop
+- name: dockerhub-push-develop
   build_logs_to_retain: 5
   plan:
   - aggregate:
@@ -103,11 +103,11 @@ jobs:
     - get: repo
       resource: repo-develop
       passed:
-      - docker-push-develop
+      - dockerhub-push-develop
       trigger: true
     - get: dockerhub
       passed:
-      - docker-push-develop
+      - dockerhub-push-develop
       params:
         save: true
     - get: repo-version
@@ -122,7 +122,7 @@ jobs:
     - get: repo-src
       resource: repo-develop
       passed:
-      - docker-push-develop
+      - dockerhub-push-develop
     - get: repo-dest
       resource: repo-master
   - task: merge-develop-to-master
@@ -207,7 +207,7 @@ jobs:
     params:
       repository: output
       tag: repo-version/number
-- name: docker-push-master
+- name: dockerhub-push-master
   build_logs_to_retain: 5
   plan:
   - aggregate:
@@ -237,11 +237,11 @@ jobs:
     - get: repo
       resource: repo-master
       passed:
-      - docker-push-master
+      - dockerhub-push-master
       trigger: true
     - get: dockerhub
       passed:
-      - docker-push-master
+      - dockerhub-push-master
       params:
         save: true
     - get: repo-version
@@ -256,13 +256,13 @@ jobs:
     - get: repo-src
       resource: repo-master
       passed:
-      - docker-push-master
+      - dockerhub-push-master
       trigger: true
     - get: repo-dest
       resource: repo-develop
     - get: repo-version
       passed:
-      - docker-push-master
+      - dockerhub-push-master
       params:
         bump: patch
   - task: merge-master-to-develop
