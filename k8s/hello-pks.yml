@@ -1,108 +1,108 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: hello-pks
-spec:
-  selector:
-    app: hello-pks
-  ports:
-  - protocol: TCP
-    port: 8080
-  type: LoadBalancer
+kind:latest Service
+apiVersion:latest v1
+metadata:latest
+  name:latest hello-pks
+spec:latest
+  selector:latest
+    app:latest hello-pks
+  ports:latest
+  - protocol:latest TCP
+    port:latest 8080
+  type:latest LoadBalancer
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: hello-pks
-spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: hello-pks
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
-        prometheus.io/path: /actuator/prometheus
-    spec:
-      containers:
-      - name: hello-pks
-        image: making/hello-pks:0.0.1
-        ports:
-        - containerPort: 8080
-        env:
-        - name: SERVER_PORT
-          value: "8080"
-        - name: SPRING_PROFILES_ACTIVE
-          value: kubernetes
-        - name: _JAVA_OPTIONS
-          value: "-Xms40M -Xmx40M -Xss1M -XX:MaxMetaspaceSize=48M -XX:ReservedCodeCacheSize=32M -XX:CompressedClassSpaceSize=18M -XX:MaxDirectMemorySize=16M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP"
-        - name: NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
-        - name: NODE_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: POD_SERVICE_ACCOUNT
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.serviceAccountName
-        - name: POD_UID
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.uid
-        - name: CONTAINER_CPU_REQUEST
-          valueFrom:
-            resourceFieldRef:
-              containerName: hello-pks
-              resource: requests.cpu
-        - name: CONTAINER_CPU_LIMIT
-          valueFrom:
-            resourceFieldRef:
-              containerName: hello-pks
-              resource: limits.cpu
-        - name: CONTAINER_MEM_REQUEST
-          valueFrom:
-            resourceFieldRef:
-              containerName: hello-pks
-              resource: requests.memory
-        - name: CONTAINER_MEM_LIMIT
-          valueFrom:
-            resourceFieldRef:
-              containerName: hello-pks
-              resource: limits.memory
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 10
-          timeoutSeconds: 3
-          periodSeconds: 5
-          failureThreshold: 3
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 20
-          timeoutSeconds: 1
-          periodSeconds: 10
-          failureThreshold: 1
-        resources:
-          limits:
-            memory: "174Mi"
-          # requests:
-          #   memory: "174Mi"
+apiVersion:latest extensions/v1beta1
+kind:latest Deployment
+metadata:latest
+  name:latest hello-pks
+spec:latest
+  replicas:latest 2
+  template:latest
+    metadata:latest
+      labels:latest
+        app:latest hello-pks
+      annotations:latest
+        prometheus.io/scrape:latest "true"
+        prometheus.io/port:latest "8080"
+        prometheus.io/path:latest /actuator/prometheus
+    spec:latest
+      containers:latest
+      - name:latest hello-pks
+        image:latest making/hello-pks:latest0.0.1
+        ports:latest
+        - containerPort:latest 8080
+        env:latest
+        - name:latest SERVER_PORT
+          value:latest "8080"
+        - name:latest SPRING_PROFILES_ACTIVE
+          value:latest kubernetes
+        - name:latest _JAVA_OPTIONS
+          value:latest "-Xms40M -Xmx40M -Xss1M -XX:latestMaxMetaspaceSize=48M -XX:latestReservedCodeCacheSize=32M -XX:latestCompressedClassSpaceSize=18M -XX:latestMaxDirectMemorySize=16M -XX:latest+UnlockExperimentalVMOptions -XX:latest+UseCGroupMemoryLimitForHeap -XX:latestMaxRAMFraction=1 -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP"
+        - name:latest NODE_NAME
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest spec.nodeName
+        - name:latest NODE_IP
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest status.hostIP
+        - name:latest POD_NAME
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest metadata.name
+        - name:latest POD_NAMESPACE
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest metadata.namespace
+        - name:latest POD_IP
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest status.podIP
+        - name:latest POD_SERVICE_ACCOUNT
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest spec.serviceAccountName
+        - name:latest POD_UID
+          valueFrom:latest
+            fieldRef:latest
+              fieldPath:latest metadata.uid
+        - name:latest CONTAINER_CPU_REQUEST
+          valueFrom:latest
+            resourceFieldRef:latest
+              containerName:latest hello-pks
+              resource:latest requests.cpu
+        - name:latest CONTAINER_CPU_LIMIT
+          valueFrom:latest
+            resourceFieldRef:latest
+              containerName:latest hello-pks
+              resource:latest limits.cpu
+        - name:latest CONTAINER_MEM_REQUEST
+          valueFrom:latest
+            resourceFieldRef:latest
+              containerName:latest hello-pks
+              resource:latest requests.memory
+        - name:latest CONTAINER_MEM_LIMIT
+          valueFrom:latest
+            resourceFieldRef:latest
+              containerName:latest hello-pks
+              resource:latest limits.memory
+        readinessProbe:latest
+          httpGet:latest
+            path:latest /actuator/health
+            port:latest 8080
+          initialDelaySeconds:latest 10
+          timeoutSeconds:latest 3
+          periodSeconds:latest 5
+          failureThreshold:latest 3
+        livenessProbe:latest
+          httpGet:latest
+            path:latest /actuator/health
+            port:latest 8080
+          initialDelaySeconds:latest 20
+          timeoutSeconds:latest 1
+          periodSeconds:latest 10
+          failureThreshold:latest 1
+        resources:latest
+          limits:latest
+            memory:latest "174Mi"
+          # requests:latest
+          #   memory:latest "174Mi"
