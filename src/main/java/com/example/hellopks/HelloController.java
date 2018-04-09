@@ -35,7 +35,7 @@ public class HelloController {
 
     @ResponseBody
     @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Map<String, Object> json(Model model) {
+    public Map<String, Object> json() {
         Map<String, String> env = System.getenv();
         Map<String, String> node = env.entrySet().stream() //
                 .filter(e -> e.getKey().startsWith("NODE")) //
