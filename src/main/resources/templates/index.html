@@ -41,11 +41,71 @@
     </div>
     <div class="grid grid-show mbxl">
         <div class="col">
+            <h2 class="h2 type-brand-4">Node Info</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="e : ${node}">
+                    <td><code>[[${e.key}]]</code></td>
+                    <td><code>[[${e.value}]]</code></td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <h2 class="h2 type-brand-4">Pod Info</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="e : ${pod}">
+                    <td><code>[[${e.key}]]</code></td>
+                    <td><code>[[${e.value}]]</code></td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <h2 class="h2 type-brand-4">Container Info</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="e : ${container}">
+                    <td><code>[[${e.key}]]</code></td>
+                    <td><code>[[${e.value}]]</code></td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
             <h2 class="h2 type-brand-4">Build Info</h2>
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th width="30%">Name</th>
                     <th>Value</th>
                 </tr>
                 </thead>
@@ -61,7 +121,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th width="30%">Name</th>
                     <th>Value</th>
                 </tr>
                 </thead>
@@ -81,7 +141,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th width="30%">Name</th>
                     <th>Value</th>
                 </tr>
                 </thead>
