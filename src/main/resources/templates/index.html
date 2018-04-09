@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello PKS</title>
+    <link rel="stylesheet" href="../static/pui-components-14.0.0.css" data-th-href="@{/pui-components-14.0.0.css}"/>
+    <style>
+        .rotate-anime {
+            animation: rotate-anime 3s linear infinite;
+        }
+
+        .content {
+            padding: 32px
+        }
+
+        @keyframes rotate-anime {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h1 class="h1 type-brand-3">Hello PKS</h1>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <img src="../static/pks.png" data-th-src="@{/pks.png}" title="Pivotal Container Service (PKS)"
+                 class="rotatable">
+            <img src="../static/pks-name.png" data-th-src="@{/pks-name.png}" title="Pivotal Container Service (PKS)">
+            <img src="../static/k8s.png" data-th-src="@{/k8s.png}" title="Kubernetes" class="rotatable">
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <button class="pui-btn pui-btn-brand btn btn-brand" onclick="rotate()">Rotate</button>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <h2 class="h2 type-brand-4">Build Info</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody id="info-tbody">
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <h2 class="h2 type-brand-4">Environment Variables</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="e : ${env}">
+                    <td><code>[[${e.key}]]</code></td>
+                    <td><code>[[${e.value}]]</code></td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <h2 class="h2 type-brand-4">System Properties</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="p : ${props}">
+                    <td><code>[[${p.key}]]</code></td>
+                    <td><code>[[${p.value}]]</code></td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="grid grid-show mbxl">
+        <div class="col">
+            <h2 class="h2 type-brand-4">Actuator Links</h2>
+            <ul class="list-unordered" id="actuator">
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    function rotate() {
+        var rotatables = document.getElementsByClassName('rotatable');
+        for (var i = 0; i < rotatables.length; i++) {
+            var rotatable = rotatables[i];
+            var className = rotatable.className;
+            if (className.indexOf('rotate-anime') > 0) {
+                rotatable.className = className.replace(' rotate-anime', '');
+            } else {
+                rotatable.className = className + ' rotate-anime';
+            }
+        }
+    }
+
+    function buildInfo() {
+        var r = new XMLHttpRequest();
+        r.open("GET", "actuator/info", true);
+        r.onreadystatechange = function () {
+            if (r.readyState != 4 || r.status != 200) {
+                return;
+            }
+            var info = JSON.parse(r.responseText);
+            var tbody = document.getElementById('info-tbody');
+            var html = '';
+            for (var k in info) {
+                var inf = info[k];
+                for (var kk in inf) {
+                    var v = inf[kk];
+                    if (typeof v === 'object') {
+                        for (var kkk in v) {
+                            var vv = v[kkk];
+                            if (typeof vv === 'object') {
+                                vv = JSON.stringify(vv);
+                            }
+                            var li = '<tr><td><code>' + k + '.' + kk + '.' + kkk + '</code></td><td><code>' + vv + '</code></td></tr>';
+                            html = html + li;
+                        }
+                    } else {
+                        var li = '<tr><td><code>' + k + '.' + kk + '</code></td><td><code>' + v + '</code></td></tr>';
+                        html = html + li;
+                    }
+                }
+            }
+            tbody.innerHTML = html;
+        };
+        r.send();
+    }
+
+    function actuatorLinks() {
+        var r = new XMLHttpRequest();
+        r.open("GET", "actuator", true);
+        r.onreadystatechange = function () {
+            if (r.readyState != 4 || r.status != 200) {
+                return;
+            }
+            var links = JSON.parse(r.responseText)._links;
+            var ul = document.getElementById('actuator');
+            var html = '';
+            for (var k in links) {
+                var li = '<li><a href="' + links[k].href + '" class="underline-gray">' + k + '</a></li>';
+                html = html + li;
+            }
+            ul.innerHTML = html;
+        };
+        r.send();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        buildInfo();
+        actuatorLinks();
+    });
+</script>
+</body>
+</html>
