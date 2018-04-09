@@ -38,6 +38,7 @@
     <div class="grid grid-show mbxl">
         <div class="col">
             <button class="pui-btn pui-btn-brand btn btn-brand" onclick="rotate()">Rotate</button>
+            <button class="pui-btn pui-btn-danger btn btn-danger" onclick="shutdown()">Shutdown</button>
         </div>
     </div>
     <div class="grid grid-show mbxl">
@@ -176,6 +177,19 @@
                 rotatable.className = className + ' rotate-anime';
             }
         }
+    }
+
+    function shutdown() {
+        var r = new XMLHttpRequest();
+        r.open("POST", "actuator/shutdown", true);
+        r.onreadystatechange = function () {
+            if (r.readyState != 4 || r.status != 200) {
+                return;
+            }
+            alert(JSON.parse(r.responseText).message);
+            location.reload();
+        };
+        r.send();
     }
 
     function buildInfo() {
