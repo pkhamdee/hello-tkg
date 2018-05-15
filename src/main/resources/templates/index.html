@@ -26,7 +26,7 @@
 </head>
 <body>
 <div class="content">
-    <h1 class="h1 type-brand-3">Hello PKS</h1>
+    <h1 class="h1 type-brand-3"><a data-th-href="@{/}">Hello PKS</a></h1>
     <div class="grid grid-show mbxl">
         <div class="col">
             <img src="../static/pks.png" data-th-src="@{/pks.png}" title="Pivotal Container Service (PKS)"
@@ -37,6 +37,7 @@
     </div>
     <div class="grid grid-show mbxl">
         <div class="col">
+            <a data-th-href="@{/tweets}" class="pui-btn pui-btn-primary btn btn-primary">Tweets</a>
             <button class="pui-btn pui-btn-brand btn btn-brand" onclick="rotate()">Rotate</button>
             <button class="pui-btn pui-btn-danger btn btn-danger" onclick="shutdown()">Shutdown</button>
         </div>

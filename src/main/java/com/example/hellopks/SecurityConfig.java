@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .matchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR") //
                 .anyExchange().permitAll() //
                 .and() //
+                .csrf().disable() /* TODO */ //
                 .build();
     }
 }
