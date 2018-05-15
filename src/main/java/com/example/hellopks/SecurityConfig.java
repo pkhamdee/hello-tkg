@@ -16,6 +16,7 @@ public class SecurityConfig {
                 .and() //
                 .authorizeExchange() //
                 .matchers(EndpointRequest.to("health", "info")).permitAll() //
+                .pathMatchers("/actuator").permitAll() //
                 .matchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR") //
                 .anyExchange().permitAll() //
                 .and() //
