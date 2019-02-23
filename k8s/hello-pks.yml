@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: hello-pks
+  namespace: default
 spec:
   selector:
     app: hello-pks
@@ -14,6 +15,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: hello-pks
+  namespace: default
 spec:
   replicas: 2
   template:
@@ -27,7 +29,7 @@ spec:
     spec:
       containers:
       - name: hello-pks
-        image: making/hello-pks:0.0.2
+        image: making/hello-pks
         ports:
         - containerPort: 8080
         env:
