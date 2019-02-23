@@ -38,7 +38,7 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
         - name: _JAVA_OPTIONS
-          value: "-Xms40M -Xmx40M -Xss1M -XX:MaxMetaspaceSize=48M -XX:ReservedCodeCacheSize=32M -XX:CompressedClassSpaceSize=18M -XX:MaxDirectMemorySize=16M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP"
+          value: "-Xmx26435K -XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=104636K -XX:ReservedCodeCacheSize=24M -Xss512k -XX:+PrintCodeCache -Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP"
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -106,5 +106,5 @@ spec:
         resources:
           limits:
             memory: "174Mi"
-          # requests:
-          #   memory: "174Mi"
+          requests:
+            memory: "174Mi"
