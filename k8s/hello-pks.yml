@@ -106,6 +106,8 @@ spec:
         resources:
           limits:
             memory: "512Mi"
+          requests:
+            memory: "512Mi"
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
