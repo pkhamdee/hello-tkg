@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Controller
 public class HelloController {
-    @GetMapping(path = "/", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(path = "/demo", produces = MediaType.TEXT_HTML_VALUE)
     public String index(Model model) {
         Map<String, String> env = System.getenv();
         Map<String, String> node = env.entrySet().stream() //
@@ -34,7 +34,7 @@ public class HelloController {
     }
 
     @ResponseBody
-    @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/demo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Map<String, Object> json() {
         Map<String, String> env = System.getenv();
         Map<String, String> node = env.entrySet().stream() //
