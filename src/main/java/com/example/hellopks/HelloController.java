@@ -6,34 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Controller
 public class HelloController {
-    final Random random;
-    {
-        try {
-            random = SecureRandom.getInstance("NativePRNGNonBlocking");
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public void bug() {
-        if (random.nextInt(100) < 3) {
-            throw new IllegalStateException("B U G!!");
-        }
-    }
-
     @GetMapping(path = "/", produces = MediaType.TEXT_HTML_VALUE)
     public String index(Model model) {
-        this.bug();
         Map<String, String> env = System.getenv();
         Map<String, String> node = env.entrySet().stream() //
                 .filter(e -> e.getKey().startsWith("NODE")) //
@@ -55,7 +36,6 @@ public class HelloController {
     @ResponseBody
     @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Map<String, Object> json() {
-        this.bug();
         Map<String, String> env = System.getenv();
         Map<String, String> node = env.entrySet().stream() //
                 .filter(e -> e.getKey().startsWith("NODE")) //
