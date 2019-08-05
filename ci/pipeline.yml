@@ -3,45 +3,52 @@ resources:
   - name: repo-master
     type: git
     source:
-      uri: git@github.com:making/hello-pks.git
+      uri: https://github.com/pivhub/hello-pks.git
+      username: ((git-username))
+      password: ((git-password)) 
       branch: master
-      private_key: ((github-private-key))
   - name: repo-develop
     type: git
     source:
-      uri: git@github.com:making/hello-pks.git
+      uri: https://github.com/pivhub/hello-pks.git
+      username: ((git-username))
+      password: ((git-password))
       branch: develop
-      private_key: ((github-private-key))
       ignore_paths:
       - ci/*
       - README.md
   - name: repo-version
     type: semver
     source:
-      uri: git@github.com:making/hello-pks.git
+      uri: https://github.com/pivhub/hello-pks.git
+      username: ((git-username))
+      password: ((git-password))
       branch: version
-      private_key: ((github-private-key))
       file: version
       driver: git
       initial_version: 0.0.1
-  - name: dockerhub
-    type: docker-image
-    source:
-      repository: making/hello-pks
-      username: ((docker-username))
-      password: ((docker-password))
   - name: harbor
     type: docker-image
     source:
       repository: ((harbor-hostname))/library/hello-pks
       username: ((harbor-username))
       password: ((harbor-password))
+      insecure_registries:
+      - ((harbor-hostname))
+      ca_certs:
+      - domain: ((harbor-hostname)):443
+        cert: ((harbor-ca))
+params:
+  git: &GIT_PARAMS
+    GIT_EMAIL: ((git-email))
+    GIT_NAME: ((git-name))
+    SRC_BRANCH: develop
 jobs:
 ### Dev
-- name: dockerhub-push-develop
+- name: docker-push-develop
   build_logs_to_retain: 5
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo
       resource: repo-develop
       trigger: true
@@ -91,38 +98,20 @@ jobs:
           mv build/*.jar updated/app.jar
           cp repo/Dockerfile updated/Dockerfile
           cat updated/Dockerfile
-  - put: dockerhub
+  - put: harbor
     params: &DOCKER_PUSH
       build: updated
       build_args:
         JAR_FILE: app.jar
-- name: harbor-push-develop
-  build_logs_to_retain: 5
-  plan:
-  - aggregate:
-    - get: repo
-      resource: repo-develop
-      passed:
-      - dockerhub-push-develop
-      trigger: true
-    - get: dockerhub
-      passed:
-      - dockerhub-push-develop
-      params:
-        save: true
-    - get: repo-version
-  - put: harbor
-    params:
-      load: dockerhub
 ### Prod
 - name: merge-develop-to-master
   build_logs_to_retain: 5
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo-src
       resource: repo-develop
       passed:
-      - dockerhub-push-develop
+      - docker-push-develop
     - get: repo-dest
       resource: repo-master
   - task: merge-develop-to-master
@@ -159,7 +148,7 @@ jobs:
 - name: tag-master
   build_logs_to_retain: 5
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo
       resource: repo-master
       trigger: true
@@ -207,10 +196,10 @@ jobs:
     params:
       repository: output
       tag: repo-version/number
-- name: dockerhub-push-master
+- name: docker-push-master
   build_logs_to_retain: 5
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo
       resource: repo-master
       passed:
@@ -225,44 +214,24 @@ jobs:
   - task: update-docker
     config:
       <<: *COPY_DOCKERFILE
-  - put: dockerhub
+  - put: harbor
     params:
       <<: *DOCKER_PUSH
       tag: repo-version/number
       tag_as_latest: true
-- name: harbor-push-master
-  build_logs_to_retain: 5
-  plan:
-  - aggregate:
-    - get: repo
-      resource: repo-master
-      passed:
-      - dockerhub-push-master
-      trigger: true
-    - get: dockerhub
-      passed:
-      - dockerhub-push-master
-      params:
-        save: true
-    - get: repo-version
-  - put: harbor
-    params:
-      load: dockerhub
-      tag: repo-version/number
-      tag_as_latest: true
 - name: bump-to-next-patch-version
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo-src
       resource: repo-master
       passed:
-      - dockerhub-push-master
+      - docker-push-master
       trigger: true
     - get: repo-dest
       resource: repo-develop
     - get: repo-version
       passed:
-      - dockerhub-push-master
+      - docker-push-master
       params:
         bump: patch
   - task: merge-master-to-develop
@@ -335,7 +304,7 @@ jobs:
       file: repo-version/number
 - name: bump-to-next-minor-version
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo
       resource: repo-develop
     - get: repo-version
@@ -354,7 +323,7 @@ jobs:
       file: repo-version/number
 - name: bump-to-next-major-version
   plan:
-  - aggregate:
+  - in_parallel:
     - get: repo
       resource: repo-develop
     - get: repo-version
@@ -371,9 +340,3 @@ jobs:
   - put: repo-version
     params:
       file: repo-version/number
-
-params:
-  git: &GIT_PARAMS
-    GIT_EMAIL: ((git-email))
-    GIT_NAME: ((git-name))
-    SRC_BRANCH: develop
