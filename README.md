@@ -1,3 +1,5 @@
+test
+
 create projectt
 
 curl https://start.spring.io/starter.tgz \
