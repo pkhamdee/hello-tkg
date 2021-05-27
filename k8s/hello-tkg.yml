@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: hello-pks
+  name: hello-tkg
   namespace: default
 spec:
   selector:
-    app: hello-pks
+    app: hello-tkg
   ports:
   - protocol: TCP
     port: 8080
@@ -14,22 +14,22 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: hello-pks
+  name: hello-tkg
   namespace: default
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: hello-pks
+        app: hello-tkg
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
         prometheus.io/path: /actuator/prometheus
     spec:
       containers:
-      - name: hello-pks
-        image: making/hello-pks
+      - name: hello-tkg
+        image: making/hello-tkg
         ports:
         - containerPort: 8080
         env:
@@ -70,22 +70,22 @@ spec:
         - name: CONTAINER_CPU_REQUEST
           valueFrom:
             resourceFieldRef:
-              containerName: hello-pks
+              containerName: hello-tkg
               resource: requests.cpu
         - name: CONTAINER_CPU_LIMIT
           valueFrom:
             resourceFieldRef:
-              containerName: hello-pks
+              containerName: hello-tkg
               resource: limits.cpu
         - name: CONTAINER_MEM_REQUEST
           valueFrom:
             resourceFieldRef:
-              containerName: hello-pks
+              containerName: hello-tkg
               resource: requests.memory
         - name: CONTAINER_MEM_LIMIT
           valueFrom:
             resourceFieldRef:
-              containerName: hello-pks
+              containerName: hello-tkg
               resource: limits.memory
         readinessProbe:
           httpGet:
@@ -115,16 +115,16 @@ metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
-  name: hello-pks
+  name: hello-tkg
   namespace: default
 spec:
   rules:
-  - host: hello-pks.k8s.bosh.tokyo
+  - host: hello-tkg.dev.pkhamdee.com
     http:
       paths:
       - backend:
-          serviceName: hello-pks
+          serviceName: hello-tkg
           servicePort: 8080
   tls:
   - hosts:
-    - hello-pks.k8s.bosh.tokyo
+    - hello-tkg.dev.pkhamdee.com

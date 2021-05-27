@@ -6,10 +6,10 @@ docker-compose up -d
 fly login -t home -u test -p test -c http://localhost:8080
 
 #add pipeline
-fly -t home sp -p hello-pks \
+fly -t home sp -p hello-tkg \
     -c pipeline.yml \
     -l credentials.yml \
     --var "harbor-ca=$(cat ca.crt)"
 
 #remove pipeline
-fly -t home dp -p hello-pks
+fly -t home dp -p hello-tkg

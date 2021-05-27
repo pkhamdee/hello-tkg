@@ -1,4 +1,4 @@
-package com.example.hellopks;
+package com.example.hellotkg;
 
 import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;

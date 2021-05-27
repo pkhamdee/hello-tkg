@@ -1,4 +1,4 @@
-package com.example.hellopks;
+package com.example.hellotkg;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

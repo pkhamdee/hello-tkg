@@ -3,14 +3,14 @@ resources:
   - name: repo-master
     type: git
     source:
-      uri: https://github.com/pivhub/hello-pks.git
+      uri: https://github.com/pkhamdee/hello-tkg.git
       username: ((git-username))
       password: ((git-password)) 
       branch: master
   - name: repo-develop
     type: git
     source:
-      uri: https://github.com/pivhub/hello-pks.git
+      uri: https://github.com/pkhamdee/hello-tkg.git
       username: ((git-username))
       password: ((git-password))
       branch: develop
@@ -20,7 +20,7 @@ resources:
   - name: repo-version
     type: semver
     source:
-      uri: https://github.com/pivhub/hello-pks.git
+      uri: https://github.com/pkhamdee/hello-tkg.git
       username: ((git-username))
       password: ((git-password))
       branch: version
@@ -30,7 +30,7 @@ resources:
   - name: harbor
     type: docker-image
     source:
-      repository: ((harbor-hostname))/library/hello-pks
+      repository: ((harbor-hostname))/demo/hello-tkg
       username: ((harbor-username))
       password: ((harbor-password))
       insecure_registries:
@@ -182,7 +182,7 @@ jobs:
           rm -rf ~/.m2
           ln -fs $(pwd)/m2 ~/.m2
           mvn versions:set -DnewVersion=${VERSION}
-          sed -i.bak "s/:latest/:${VERSION}/g" k8s/hello-pks.yml
+          sed -i.bak "s/:latest/:${VERSION}/g" k8s/hello-tkg.yml
           rm -f pom.xml.versionsBackup
           shopt -s dotglob
           shopt -s extglob
@@ -286,7 +286,7 @@ jobs:
           rm -rf ~/.m2
           ln -fs $(pwd)/m2 ~/.m2
           mvn versions:set -DnewVersion=${VERSION}-SNAPSHOT -DallowSnapshots
-          sed -i.bak "s/:${VERSION}/:latest/g" k8s/hello-pks.yml
+          sed -i.bak "s/:${VERSION}/:latest/g" k8s/hello-tkg.yml
           rm -f pom.xml.versionsBackup
           shopt -s dotglob
           shopt -s extglob
