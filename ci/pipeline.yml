@@ -33,11 +33,11 @@ resources:
       repository: ((harbor-hostname))/demo/hello-tkg
       username: ((harbor-username))
       password: ((harbor-password))
-      insecure_registries:
-      - ((harbor-hostname))
-      ca_certs:
-      - domain: ((harbor-hostname)):443
-        cert: ((harbor-ca))
+      # insecure_registries:
+      # - ((harbor-hostname))
+      # ca_certs:
+      # - domain: ((harbor-hostname)):443
+      #   cert: ((harbor-ca))
 params:
   git: &GIT_PARAMS
     GIT_EMAIL: ((git-email))
