@@ -26,3 +26,5 @@
 
 credentials.yml
 *.bak
+
+.DS_Store
